@@ -1,0 +1,14 @@
+# ENVIRONMENT
+.env
+.idea
+
+# NODE
+node_modules
+package-lock.json
+
+# MANAGE WORKFLOW
+makefile
+todo
+
+# TEMPORARY CODE
+trashcode
