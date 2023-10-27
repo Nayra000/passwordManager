@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "dev": "node app.js",
     "test": "echo \"no tests\"",
     "style": "npx tailwindcss -i ./public/input.css -o ./public/output.css --watch"
