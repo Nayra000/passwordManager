@@ -5,7 +5,6 @@ config.env
 
 # NODE
 node_modules
-package-lock.json
 
 # MANAGE WORKFLOW
 makefile
