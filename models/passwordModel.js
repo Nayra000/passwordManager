@@ -24,20 +24,16 @@ const passwordSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, `Provide a password for ${this.hubName} account`],
-    select: false,
   },
   passwordChangedAt: {
     // to track when you set this password or changed
     type: Date,
   },
   cipheriv: {
-    type: String,
-    select: false,
+    type: Buffer,
   },
   hubPassword: {
     type: String,
-    select: false,
-    default: 'none',
   },
 });
 
@@ -46,11 +42,11 @@ passwordSchema.pre('save', async function (next) {
 
   this.cipheriv = crypto.randomBytes(16);
 
-  const cipher = crypto.createCipheriv(
-    'aes-256-cbc',
-    process.env.CIPHER_SECRET_KEY,
-    this.cipheriv,
+  const key = Buffer.from(process.env.CIPHER_SECRET_KEY, 'hex').toString(
+    'base64',
   );
+
+  const cipher = crypto.createCipheriv('aes-256-cbc', key, this.cipheriv);
 
   this.password = cipher.update(this.password, 'utf-8', 'hex');
   this.password += cipher.final('hex');
@@ -60,17 +56,26 @@ passwordSchema.pre('save', async function (next) {
   next();
 });
 
-passwordSchema.post(/^find/, function (docs, next) {
-  const decipher = crypto.createDecipheriv(
-    'aes-256-cbc',
-    process.env.CIPHER_SECRET_KEY,
-    this.cipheriv,
-  );
+passwordSchema.post(/^find/, async function (docs, next) {
+  if (!this.password) next();
 
-  this.decryptedPassword = decipher.update(this.password, 'hex', 'utf-8');
-  this.decryptedPassword += decipher.final('utf-8');
+  docs.forEach((element) => {
+    const key = Buffer.from(process.env.CIPHER_SECRET_KEY, 'hex').toString(
+      'base64',
+    );
 
-  // console.log(this.decryptedPassword); // This is a secret message
+    const decipher = crypto.createDecipheriv(
+      'aes-256-cbc',
+      key,
+      element.cipheriv,
+    );
+
+    element.hubPassword = decipher.update(element.password, 'hex', 'utf-8');
+    element.hubPassword += decipher.final('utf-8');
+
+    element.cipheriv = undefined;
+    element.password = undefined;
+  });
 
   next();
 });
