@@ -35,6 +35,10 @@ mongoose
     console.log('DB connection ERROR!!');
   });
 
+app.get("/", (req, res) => {
+  res.send("Welcome to our password manager");
+});
+
 app.listen(3000, () => {
   console.log('listening on port 3000');
 });
