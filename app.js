@@ -6,6 +6,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const viewRouter = require('./routers/viewsRouter');
+const passwordRouter = require('./routers/passwordRouter');
 
 const app = express();
 
@@ -17,6 +18,8 @@ app.use(morgan('dev'));
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
+
+app.use('/api/passwords' ,passwordRouter);
 app.use('/password-app', viewRouter);
 
 const DB = process.env.DATABASE.replace(
@@ -34,10 +37,6 @@ mongoose
   .catch((err) => {
     console.log('DB connection ERROR!!');
   });
-
-app.get("/", (req, res) => {
-  res.send("Welcome to our password manager");
-});
 
 app.listen(3000, () => {
   console.log('listening on port 3000');
