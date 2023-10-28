@@ -7,7 +7,6 @@
         }
     ],
     "rewrites": [
-        { "source": "/(.*)", "destination": "/" },
-        {"source": "/app.js", "destination": "/"}    
+        { "rewrites": [{ "source": "/(.*)", "destination": "/" }] }
     ]
 }
