@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { default: isEmail } = require('validator/lib/isEmail');
+const validator = require('validator');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     validate: {
-      validator: isEmail,
+      validator: validator.isEmail,
       message: 'Enter a valid email',
     },
   },
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'User must have a password'],
     minlength: 8,
-    select: false,
+    // select: false,
   },
   passwordConfirm: {
     type: String,
@@ -37,9 +37,11 @@ const userSchema = new mongoose.Schema({
       },
       message: 'Please, check if password is the same.',
     },
+    // select: false,
   },
   passwordChangedAt: {
     type: Date,
+    required: false,
   },
 });
 
