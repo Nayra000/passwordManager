@@ -19,6 +19,8 @@
     "eslint": "^8.52.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5"
   },
@@ -29,7 +31,8 @@
     "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.3",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "validator": "^13.11.0"
   }
 }
 
