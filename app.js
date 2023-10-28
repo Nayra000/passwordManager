@@ -39,6 +39,10 @@ app.get("/", (req, res) => {
   res.send("Welcome to our password manager");
 });
 
+app.get("/app.js", (req, res) => {
+  res.send("Welcome to our password manager");
+});
+
 app.listen(3000, () => {
   console.log('listening on port 3000');
 });
