@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const express = require('express');
 const mongoose = require('mongoose');
 
-const viewRouter = require('../routers/viewsRouter');
+const viewRouter = require('./routers/viewsRouter');
 
 const app = express();
 
@@ -36,6 +36,10 @@ mongoose
   });
 
 app.get("/", (req, res) => {
+  res.send("Welcome to our password manager");
+});
+
+app.get("/app.js", (req, res) => {
   res.send("Welcome to our password manager");
 });
 
