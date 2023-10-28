@@ -35,11 +35,7 @@ mongoose
     console.log('DB connection ERROR!!');
   });
 
-app.get("/", (req, res) => {
-  res.send("Welcome to our password manager");
-});
-
-app.get("/app.js", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("Welcome to our password manager");
 });
 
