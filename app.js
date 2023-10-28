@@ -50,3 +50,6 @@ app.get("/app", (req, res) => {
 app.listen(3000, () => {
   console.log('listening on port 3000');
 });
+
+// allow Vercel to turn Express into a serverless function
+module.exports = app;
