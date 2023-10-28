@@ -2,13 +2,13 @@
   "name": "passwordmanager",
   "version": "1.0.0",
   "description": "",
-  "main": "api/app.js",
+  "main": "app.js",
   "engines": {
     "node": "18.x"
   },
   "scripts": {
-    "start": "node api/app.js",
-    "dev": "node api/app.js",
+    "start": "node app.js",
+    "dev": "node app.js",
     "test": "echo \"no tests\"",
     "style": "npx tailwindcss -i ./public/input.css -o ./public/output.css --watch"
   },
