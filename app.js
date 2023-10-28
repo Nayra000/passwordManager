@@ -36,7 +36,15 @@ mongoose
   });
 
 app.get("/", (req, res) => {
-  res.send("Welcome to our password manager");
+  res.send("root '/' route");
+});
+
+app.get("/app.js", (req, res) => {
+  res.send("app.js route");
+});
+
+app.get("/app", (req, res) => {
+  res.send("app route");
 });
 
 app.listen(3000, () => {
