@@ -12,4 +12,8 @@ router.route('/create-password').post(passwordController.createPassword);
 
 router.route('/passwords').get(passwordController.getAllPasswords);
 
+router.get('/', (req, res) => {
+  res.send('viewRouter route');
+});
+
 module.exports = router;
