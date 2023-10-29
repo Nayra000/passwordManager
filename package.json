@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node index.js",
-    "test": "echo \"no tests\"",
+    "test": "jest --passWithNoTests",
     "style": "npx tailwindcss -i ./public/input.css -o ./public/output.css --watch"
   },
   "keywords": [],
