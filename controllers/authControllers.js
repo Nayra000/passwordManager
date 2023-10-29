@@ -98,4 +98,12 @@ exports.isLogin = async (req ,res ,next) => {
   next();
 };
 
-/* exports.logout= ()=>{} */
+exports.logout = (req , res) => {
+  const cookieOptions = {
+    expires :new Date (Date.now() + (10 * 1000)),
+    httpOnly:true
+  };
+  res.cookie('jwt' ,'logged out' ,cookieOptions);
+  res.status(200).json({status:'success'});
+
+};

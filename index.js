@@ -39,14 +39,6 @@ app.get("/", (req, res) => {
   res.send("root '/' route");
 });
 
-app.get("/app.js", (req, res) => {
-  res.send("app.js route");
-});
-
-app.get("/app", (req, res) => {
-  res.send("app route");
-});
-
 app.listen(3000, () => {
   console.log('listening on port 3000');
 });
