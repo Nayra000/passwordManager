@@ -1,15 +1,19 @@
 const express = require('express');
-const Router = express.Router();
+const router = express();
 
 const passwordController = require('./../controllers/passwordController');
 const authController = require('./../controllers/authControllers');
 
-Router.use(authController.isLogin);
+router.use(authController.isLogin);
 
-Router.route('/')
+router
+  .route('/')
   .get(passwordController.getAllPasswords)
   .post(passwordController.createPassword);
 
-Router.route('/:id')
+router
+  .route('/:id')
   .delete(passwordController.deletePassword)
-  .patch(passwordController.updatePassword);
+  .patch(passwordController.updatePassword); // TODO: solve the saving error
+
+module.exports = router;

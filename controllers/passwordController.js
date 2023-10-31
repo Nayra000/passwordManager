@@ -1,30 +1,12 @@
 const Password = require('./../models/passwordModel');
 
-
-/* exports.getAllPasswords = async (req, res, next) => {
-  try {
-    const passwords = await Password.find().select('-__v');
-
-    res.status(200).json({
-      status: 'succes',
-      passwords,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      err,
-    });
-  }
-}; */
-
 exports.createPassword = async (req, res, next) => {
   try {
     const passwords = await Password.create({
-      'hubName':req.body.hubName,
-      'email':req.body.email,
-      'password':req.body.password,
-      'user':req.user.id
-
+      hubName: req.body.hubName,
+      email: req.body.email,
+      password: req.body.password,
+      user: req.user.id,
     });
 
     res.status(200).json({
@@ -39,10 +21,13 @@ exports.createPassword = async (req, res, next) => {
   }
 };
 
-//these get passwords for logged in user
-exports.getAllPasswords = async (req ,res) => {
+// Get passwords for logged in user
+exports.getAllPasswords = async (req, res) => {
   try {
-    const passwords = await Password.find({user:req.user.id}).select('-__v');
+    const passwords = await Password.find({ user: req.user.id }).select(
+      '-__v -user',
+    );
+
     res.status(200).json({
       status: 'success',
       passwords,
@@ -53,20 +38,20 @@ exports.getAllPasswords = async (req ,res) => {
       err,
     });
   }
-
 };
 
-exports.deletePassword = async (req , res) => {
-  try 
-  {
-    const id = +req.params.id;
+exports.deletePassword = async (req, res) => {
+  try {
+    const id = req.params.id;
     const password = await Password.findByIdAndDelete(id);
+
     if (!password) {
       return res.status(404).json({
-        status:'fail' ,
-        message:'Password not found'
+        status: 'fail',
+        message: 'Password not found',
       });
     }
+
     res.status(201).json({
       status: 'success',
     });
@@ -76,32 +61,30 @@ exports.deletePassword = async (req , res) => {
       err,
     });
   }
-
-
 };
 
-exports.updatePassword = async (req , res) => {
+exports.updatePassword = async (req, res) => {
   try {
-    const password = await Password.findByIdAndUpdate(req.params.id , req.body ,{
-      runValidators:true ,
-      new:true,
-    });
-    if (!password) {
-      return res.status(404).json({
-        status:'fail' ,
-        message:'Password not found'
-      });
-    }
-    res.status(200).json({
-      status:'success' ,
-      password
+    const password = await Password.findByIdAndUpdate(req.params.id, req.body, {
+      runValidators: true,
+      new: true,
     });
 
+    if (!password) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Password not found',
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      password,
+    });
   } catch (err) {
     res.status(400).json({
       status: 'fail',
       err,
     });
   }
-  
 };

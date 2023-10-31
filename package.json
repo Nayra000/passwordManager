@@ -7,7 +7,7 @@
     "node": "18.x"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "dev": "node index.js",
     "test": "jest --passWithNoTests",
     "style": "npx tailwindcss -i ./public/input.css -o ./public/output.css --watch"

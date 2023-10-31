@@ -34,7 +34,20 @@ module.exports = {
     'max-lines': ['error', { max: 500 }],
     'keyword-spacing': 'error',
     'multiline-ternary': ['error', 'never'],
-    'no-mixed-operators': 'error',
+    'no-mixed-operators': [
+      'error',
+      {
+        groups: [
+          ['+', '-', '*', '/', '%', '**'],
+          ['&', '|', '^', '~', '<<', '>>', '>>>'],
+          ['==', '!=', '===', '!==', '>', '>=', '<', '<='],
+          ['&&', '||'],
+          ['in', 'instanceof'],
+        ],
+        allowSamePrecedence: false,
+      },
+    ],
+    'arrow-parens': 'as-needed',
     //
     'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
     'no-whitespace-before-property': 'error',

@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const { default: isEmail } = require('validator/lib/isEmail');
 const crypto = require('crypto');
 
-
 const passwordSchema = new mongoose.Schema({
   hubName: {
     type: String,
@@ -36,11 +35,11 @@ const passwordSchema = new mongoose.Schema({
   hubPassword: {
     type: String,
   },
-  user:{
-    type :mongoose.Schema.ObjectId ,
-    ref : 'User',
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
     /* required:[true, 'The password must belong to a user'] */
-  }
+  },
 });
 
 passwordSchema.pre('save', async function (next) {
