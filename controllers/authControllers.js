@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 
 const createSendToken = (res, status, user) => {
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+  const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
+    expiresIn: process.env.EXPIRE_IN,
   });
 
   const cookieOptions = {
@@ -87,7 +87,7 @@ exports.isLogin = async (req, res, next) => {
   }
 
   const token = req.headers.cookie.split('=')[1];
-  const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const decode = await promisify(jwt.verify)(token, process.env.SECRET_KEY);
   const user = await userModel.findById(decode.id);
   if (!user) {
     return res.status(401).json({
