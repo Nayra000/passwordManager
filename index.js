@@ -6,7 +6,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const userRouter = require('./routers/userRouter');
-const testRouter = require('./routers/testRouter');
+// const testRouter = require('./routers/testRouter');
 const passwordRouter = require('./routers/passwordRouter');
 
 const app = express();
@@ -25,7 +25,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // ROUTERS
-app.use('/test', testRouter); // THIS ROUTER JUST FOR DEBUGING
+// app.use('/test', testRouter); // THIS ROUTER JUST FOR DEBUGING
 
 app.use('/passwords', passwordRouter);
 app.use('/users', userRouter);
@@ -36,7 +36,7 @@ const DB = process.env.DATABASE.replace(
   process.env.DATABASE_PASSWORD,
 );
 
-// connection to DB with mongoose ODM
+// Connect to DB with mongoose ODM
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
@@ -48,15 +48,10 @@ mongoose
     console.log('DB connection ERROR!!');
   });
 
-// TODO: ask hindawii about it's importance!!
-// app.get("/", (req, res) => {
-//   res.send("root '/' route");
-// });
-
 // SERVER CONNECTION
 app.listen(3000, () => {
   console.log('listening on port 3000');
 });
 
-// allow Vercel to turn Express into a serverless function
+// Allow Vercel to turn Express into a serverless function
 module.exports = app;

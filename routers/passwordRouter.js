@@ -14,6 +14,6 @@ router
 router
   .route('/:id')
   .delete(passwordController.deletePassword)
-  .patch(passwordController.updatePassword); // TODO: solve the saving error
+  .patch(passwordController.updatePassword);
 
 module.exports = router;

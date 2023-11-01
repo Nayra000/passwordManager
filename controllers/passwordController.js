@@ -1,4 +1,5 @@
 const Password = require('./../models/passwordModel');
+const encryptPassword = require('./../utils/encryptPassword');
 
 exports.createPassword = async (req, res, next) => {
   try {
@@ -65,17 +66,18 @@ exports.deletePassword = async (req, res) => {
 
 exports.updatePassword = async (req, res) => {
   try {
-    const password = await Password.findByIdAndUpdate(req.params.id, req.body, {
-      runValidators: true,
-      new: true,
-    });
+    const id = req.params.id;
+    const updatedPassword = req.body;
 
-    if (!password) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'Password not found',
-      });
+    if (updatedPassword.password) {
+      encryptPassword(updatedPassword);
     }
+
+    const password = await Password.findOneAndUpdate(
+      { _id: id },
+      updatedPassword,
+      { new: true },
+    );
 
     res.status(200).json({
       status: 'success',
