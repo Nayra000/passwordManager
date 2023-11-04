@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const userRouter = require('./routers/userRouter');
 // const testRouter = require('./routers/testRouter');
 const passwordRouter = require('./routers/passwordRouter');
+const viewsRouter =require('./routers/viewsRouter');
 
 const app = express();
 
@@ -27,8 +28,12 @@ app.set('views', path.join(__dirname, 'views'));
 // ROUTERS
 // app.use('/test', testRouter); // THIS ROUTER JUST FOR DEBUGING
 
-app.use('/passwords', passwordRouter);
-app.use('/users', userRouter);
+app.use('/api/passwords', passwordRouter);
+app.use('/api/users', userRouter);
+
+
+//Views
+app.use('/' ,viewsRouter);
 
 // DB connection URI
 const DB = process.env.DATABASE.replace(
