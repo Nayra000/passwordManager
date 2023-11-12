@@ -5,6 +5,8 @@ const router = express();
 
 router.route('/signup').post(authController.signup);
 
+router.route('/confirm-signup/:confirmToken').post(authController.confirmSignup);
+
 router.route('/login').post(authController.login);
 
 router.route('/logout').post(authController.isLogin, authController.logout);
