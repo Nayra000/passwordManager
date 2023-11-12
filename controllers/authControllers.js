@@ -288,3 +288,74 @@ exports.resetPassword = async (req, res, next) => {
   // login the user again
   createSendToken(res, 200, user);
 };
+
+exports.changeEmail = async (req, res, next) => {
+  // Get the logged in user from db
+  const user = await userModel.findById(req.user._id);
+
+  // Generate random reset token
+  const resetToken = user.createEmailResetToken();
+  user.save({ validateBeforeSave: false });
+
+  // Send reset token to user's email
+  try {
+    await sendEmail({
+      email: 'mhmadalaa666@gmail.com',
+      subject: 'Email Reset',
+      message: `That's a 10 minutes valid token ${resetToken} copy it to change your Email`,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'An email will be send to complete the steps',
+      // FIXME: the reset token shouldn't be returned to the client with the response
+      // it must be returned in a trusted place which the correct user have access to
+      // aka the `email`
+      resetToken,
+    });
+  } catch (err) {
+    user.emailResetToken = undefined;
+    user.emailResetExpires = undefined;
+    user.save({ validateBeforeSave: false });
+
+    return res.status(500).json({
+      status: 'fail',
+      message: 'There is an error when sending the email, pleas try again!',
+    });
+  }
+};
+
+exports.resetEmail = async (req, res, next) => {
+  // hash the token to match the saved one
+  const hashedToken = hashToken(req.params.resetToken);
+
+  // find the user by token and not exceded the expires date
+  const user = await userModel.findOne({
+    emailResetToken: hashedToken,
+    emailResetExpires: { $gt: Date.now() },
+  });
+
+  // update the email or return an error if exist
+  if (!user) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Token is invalide or has been expired!',
+    });
+  }
+
+  user.email = req.body.email;
+  if (user.email) {
+    user.emailResetToken = undefined;
+    user.emailResetExpires = undefined;
+
+    await user.save({ validateBeforeSave: false });
+  } else {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Provide a valid email!',
+    });
+  }
+
+  // login the user again
+  createSendToken(res, 200, user);
+};

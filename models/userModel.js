@@ -94,7 +94,7 @@ userSchema.methods.createPasswordResetToken = function () {
 
   this.passwordResetToken = hashToken(resetToken);
 
-  this.passwordResetExpires = Date.now() + (10 * 60 * 1000);
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
 };
@@ -104,7 +104,7 @@ userSchema.methods.createEmailResetToken = function () {
 
   this.emailResetToken = hashToken(resetToken);
 
-  this.emailResetExpires = Date.now() + (10 * 60 * 1000);
+  this.emailResetExpires = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
 };
@@ -114,7 +114,7 @@ userSchema.methods.createEmailConfirmToken = function () {
 
   this.emailCofirmToken = hashToken(confirmToken);
 
-  this.emailConfirmExpires = Date.now() + (10 * 60 * 1000);
+  this.emailConfirmExpires = Date.now() + 10 * 60 * 1000;
 
   return confirmToken;
 };
