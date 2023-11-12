@@ -5,7 +5,12 @@ const router = express();
 
 router.route('/signup').post(authController.signup);
 
-router.route('/confirm-signup/:confirmToken').post(authController.confirmSignup);
+router.post('/forgot-password', authController.forgetPassword);
+router.patch('/reset-password/:resetToken', authController.resetPassword);
+
+router
+  .route('/confirm-signup/:confirmToken')
+  .post(authController.confirmSignup);
 
 router.route('/login').post(authController.login);
 

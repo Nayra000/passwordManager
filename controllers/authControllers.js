@@ -209,3 +209,82 @@ exports.updateUser = async (req, res, next) => {
 
   next();
 };
+
+// FORGOT AND REST PASSWORD IS FOR CHANGING THE PASSWORD THAT THE USER CAN'T REMEMBER
+exports.forgetPassword = async (req, res, next) => {
+  // Get user based on his email
+  const user = await userModel.findOne({ email: req.body.email });
+  if (!user) {
+    return res.status(401).json({
+      status: 'fail',
+      message: 'There is no user with this email address!',
+    });
+  }
+
+  // Generate random reset token
+  const resetToken = user.createPasswordResetToken();
+  user.save({ validateBeforeSave: false });
+
+  // Send reset token to user's email
+  try {
+    await sendEmail({
+      email: 'mhmadalaa666@gmail.com',
+      subject: 'Password Reset',
+      message: `That's a 10 minutes valid token ${resetToken} copy it to change your password`,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'An email will be send to complete the steps',
+      // FIXME: the reset token shouldn't be returned to the client with the response
+      // it must be returned in a trusted place which the correct user have access to
+      // aka the `email`
+      resetToken,
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    user.save({ validateBeforeSave: false });
+
+    return res.status(500).json({
+      status: 'fail',
+      message: 'There is an error when sending the email, pleas try again!',
+    });
+  }
+};
+
+exports.resetPassword = async (req, res, next) => {
+  // hash the token to match the saved one
+  const hashedToken = hashToken(req.params.resetToken);
+
+  // find the user by token and not exceded the expires date
+  const user = await userModel.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+
+  // update the password or return an error if exist
+  if (!user) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Token is invalide or has been expired!',
+    });
+  }
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  if (user.password && user.password === user.passwordConfirm) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+
+    await user.save();
+  } else {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Password is invalide or not match the confirmation!',
+    });
+  }
+
+  // login the user again
+  createSendToken(res, 200, user);
+};

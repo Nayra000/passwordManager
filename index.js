@@ -24,8 +24,8 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // FIXME: TESTING ROUTER
-// const testRouter = require('./routers/testRouter');
-// app.use('/test', testRouter); 
+const testRouter = require('./routers/testRouter');
+app.use('/test', testRouter); 
 
 // ROUTERS
 app.use('/passwords', passwordRouter);
