@@ -9,4 +9,9 @@ router.route('/login').post(authController.login);
 
 router.route('/logout').post(authController.isLogin, authController.logout);
 
+// update the non-crucial data of the user
+router
+  .route('/update-user')
+  .patch(authController.isLogin, authController.updateUser);
+
 module.exports = router;

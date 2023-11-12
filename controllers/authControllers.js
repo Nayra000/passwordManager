@@ -116,3 +116,31 @@ exports.logout = (req, res) => {
   res.cookie('jwt', 'logged out', cookieOptions);
   res.status(200).json({ status: 'success' });
 };
+
+exports.updateUser = async (req, res, next) => {
+  // The other fields [password, email] can not be updated
+  // with this regular update function it needs mor confirmation
+  if (req.body.email || req.body.password) {
+    return res.status(401).json({
+      status: 'fail',
+      message:
+        'You can not update curcial data with this regualar update router',
+    });
+  }
+
+  await userModel.findByIdAndUpdate(req.user.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  const user = await userModel.findById(req.user.id);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+
+  next();
+};
