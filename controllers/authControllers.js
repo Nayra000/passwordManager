@@ -359,3 +359,34 @@ exports.resetEmail = async (req, res, next) => {
   // login the user again
   createSendToken(res, 200, user);
 };
+
+// UPDATE THE PASSWORD FOR THE LOGGED IN USER WHO KNOW THE CURRENT PASSWORD
+exports.updatePassword = async (req, res, next) => {
+  // Get the logged in user from db
+  const user = await userModel.findById(req.user._id).select('+password');
+
+  // Check if the sended password is correct
+  if (
+    !user ||
+    !(await user.correctPassword(req.body.password, user.password))
+  ) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'This password is incorrect, try again.',
+    });
+  }
+
+  // update the password
+  if (req.body.newPassword === req.body.newPasswordConfirm) {
+    user.password = req.body.newPassword;
+    user.save({ validateBeforeSave: false });
+  } else {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Password is invalide or not match the confirmation.',
+    });
+  }
+
+  // login the user again
+  createSendToken(res, 200, user);
+};
