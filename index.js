@@ -6,7 +6,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const userRouter = require('./routers/userRouter');
-// const testRouter = require('./routers/testRouter');
 const passwordRouter = require('./routers/passwordRouter');
 
 const app = express();
@@ -24,9 +23,11 @@ app.use(morgan('dev'));
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-// ROUTERS
-// app.use('/test', testRouter); // THIS ROUTER JUST FOR DEBUGING
+// FIXME: TESTING ROUTER
+// const testRouter = require('./routers/testRouter');
+// app.use('/test', testRouter); 
 
+// ROUTERS
 app.use('/passwords', passwordRouter);
 app.use('/users', userRouter);
 

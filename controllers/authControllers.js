@@ -144,16 +144,7 @@ exports.login = async (req, res) => {
 };
 
 exports.isLogin = async (req, res, next) => {
-  // try {
-  //   req.headers.cookie.split('=')[1];
-  // } catch (err) {
-  //   return res.status(401).json({
-  //     status: 'fail',
-  //     message: 'You must be logged in to access this page',
-  //   });
-  // }
-  // TODO: try this
-  if (req.headers.cookie.split('=')[1] === undefined) {
+  if (req.headers.cookie === undefined) {
     return res.status(401).json({
       status: 'fail',
       message: 'You must be logged in to access this page',
