@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const hashToken = require('./../utils/hashToken');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -43,6 +45,22 @@ const userSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  emailResetToken: String,
+  emailResetExpires: Date,
+  emailCofirmToken: String,
+  emailConfirmExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
+  authenticated: {
+    type: Boolean,
+    default: true,
+    // select: false,
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -69,6 +87,36 @@ userSchema.methods.correctPassword = async function (
   userPassword,
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  this.passwordResetToken = hashToken(resetToken);
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};
+
+userSchema.methods.createEmailResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  this.emailResetToken = hashToken(resetToken);
+
+  this.emailResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};
+
+userSchema.methods.createEmailConfirmToken = function () {
+  const confirmToken = crypto.randomBytes(32).toString('hex');
+
+  this.emailCofirmToken = hashToken(confirmToken);
+
+  this.emailConfirmExpires = Date.now() + 10 * 60 * 1000;
+
+  return confirmToken;
 };
 
 module.exports = mongoose.model('User', userSchema);
