@@ -1,7 +1,9 @@
 const passwordsModel = require('./../models/passwordModel');
-exports.getOverview =(req , res )=>{
+
+
+exports.getOverview = (req , res )=>{
     try{
-        res.status(200).render('overview', {title : 'Password Management'})
+        res.status(200).render('overview', {title : 'Overview'})
     }
     catch(err){
         res.status(404).json({
@@ -10,6 +12,7 @@ exports.getOverview =(req , res )=>{
         })
     }
 };
+
 
 exports.getSigninForm = (req , res )=>{
     try{
@@ -38,7 +41,7 @@ exports.getSignupForm =(req , res)=>{
 exports.getMyPasswords = async (req , res )=>{
     try{
         const userPasswords = await passwordsModel.find({user :req.user.id});
-        res.status(200).render('signup', {title : 'My passwords' , userPasswords});
+        res.status(200).render('mypasswords', {title : 'My passwords'  ,userPasswords});
     }
     catch(err){
         res.status(404).json({

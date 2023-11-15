@@ -12,4 +12,5 @@ router.get('/signup',viewsController.getSignupForm);
 router.get('/mypasswords',authController.isLogin,viewsController.getMyPasswords);
 
 
+
 module.exports = router;

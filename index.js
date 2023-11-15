@@ -22,7 +22,7 @@ app.use(express.static('./public'));
 app.use(morgan('dev'));
 
 // Templates configurations
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // ROUTERS
