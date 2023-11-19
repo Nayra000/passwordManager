@@ -40,7 +40,7 @@ const passwordSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
-    /* required:[true, 'The password must belong to a user'] */
+    required:[true, 'The password must belong to a user']
   },
 });
 
@@ -48,6 +48,12 @@ passwordSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
   encryptPassword(this);
+
+  next();
+});
+
+passwordSchema.pre('updateOne', async function (next) {
+  encryptPassword(this._update);
 
   next();
 });
