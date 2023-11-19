@@ -1,18 +1,23 @@
 const Password = require('./../models/passwordModel');
-const encryptPassword = require('./../utils/encryptPassword');
+
+const findPasswordById = async (id) => {
+  return await Password.find({ _id: id }).select('-__v');
+};
 
 exports.createPassword = async (req, res, next) => {
   try {
-    const passwords = await Password.create({
+    const createdPassword = await Password.create({
       hubName: req.body.hubName,
       email: req.body.email,
       password: req.body.password,
       user: req.user.id,
     });
 
+    const password = await findPasswordById(createdPassword._id);
+
     res.status(200).json({
       status: 'succes',
-      passwords,
+      password,
     });
   } catch (err) {
     res.status(400).json({
@@ -69,15 +74,12 @@ exports.updatePassword = async (req, res) => {
     const id = req.params.id;
     const updatedPassword = req.body;
 
-    if (updatedPassword.password) {
-      encryptPassword(updatedPassword);
-    }
+    await Password.updateOne({ _id: id }, updatedPassword, {
+      new: true,
+      runValidators: true,
+    });
 
-    const password = await Password.findOneAndUpdate(
-      { _id: id },
-      updatedPassword,
-      { new: true },
-    );
+    const password = await findPasswordById(id);
 
     res.status(200).json({
       status: 'success',
