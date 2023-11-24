@@ -28,8 +28,8 @@ app.set('views', path.join(__dirname, 'views'));
 // ROUTERS
 // app.use('/test', testRouter); // THIS ROUTER JUST FOR DEBUGING
 
-app.use('/api/passwords', passwordRouter);
-app.use('/api/users', userRouter);
+app.use('/passwords', passwordRouter);
+app.use('/users', userRouter);
 
 
 //Views
