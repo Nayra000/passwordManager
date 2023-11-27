@@ -4,7 +4,7 @@ const router = express();
 const passwordController = require('./../controllers/passwordController');
 const authController = require('./../controllers/authControllers');
 
-router.use(authController.isLogin);
+/* router.use(authController.isLogin); */
 
 router
   .route('/')

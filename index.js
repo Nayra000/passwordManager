@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const userRouter = require('./routers/userRouter');
 const passwordRouter = require('./routers/passwordRouter');
+const viewsRouter =require('./routers/viewsRouter');
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.use(express.static('./public'));
 app.use(morgan('dev'));
 
 // Templates configurations
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // FIXME: TESTING ROUTER
@@ -30,6 +31,10 @@ app.set('views', path.join(__dirname, 'views'));
 // ROUTERS
 app.use('/passwords', passwordRouter);
 app.use('/users', userRouter);
+
+
+//Views
+app.use('/' ,viewsRouter);
 
 // DB connection URI
 const DB = process.env.DATABASE.replace(
