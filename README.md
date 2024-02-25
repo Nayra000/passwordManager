@@ -87,7 +87,7 @@ Once the application is up and running, you can visit `http://localhost:<port>` 
 
 ## API
 
-Password-Manager provides a RESTful API to performe various actions. You can find the API documentation [here:link:](https://documenter.getpostman.com/view/28868026/2sA2rDvKnK).
+Password-Manager provides a RESTful API to performe various actions. You can find the API documentation [here :link:](https://documenter.getpostman.com/view/28868026/2sA2rDvKnK).
 
 ## Features
 
